@@ -13,14 +13,16 @@ public class MenuScreen extends BaseScreen {
     private Texture img;
     private Vector2 pos;
     private Vector2 v;
+    private Vector2 move;
 //    private float rotate;
 
     @Override
     public void show() {
         super.show();
         img = new Texture("badlogic.jpg");
-        pos = new Vector2();
-        v = new Vector2(0.3f, 0.3f);
+        pos = new Vector2(200,200);
+        v = new Vector2(200,200);
+        move = new Vector2();
 //        rotate = 0;
     }
 
@@ -39,12 +41,14 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        pos.set(screenX, Gdx.graphics.getHeight() - screenY);
+        v.set(screenX, Gdx.graphics.getHeight() - screenY);
+        move.set(v.x-pos.x,v.y-pos.y);
         return false;
     }
 
     private void update(float delta) {
-        pos.add(v);
+        if((int)pos.x!=(int)v.x&(int)pos.y!=(int)v.y)
+        pos.add(move.nor());
 //        rotate += 1;
     }
 
@@ -52,7 +56,6 @@ public class MenuScreen extends BaseScreen {
         Gdx.gl.glClearColor(0.5f, 0.7f, 0.8f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(img, 0, 0);
         batch.draw(img, pos.x, pos.y);
 //        batch.draw(new TextureRegion(img), pos.x, pos.y, pos.x, pos.y, 250, 250, 1, 1, rotate);
         batch.end();
