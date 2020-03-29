@@ -3,27 +3,30 @@ package ru.geekbrains.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.base.BaseScreen;
+import ru.geekbrains.exception.GameException;
+import ru.geekbrains.math.Rect;
+import ru.geekbrains.sprites.Background;
 
 public class MenuScreen extends BaseScreen {
 
-    private Texture img;
+    private Texture bg;
+    private Background background;
     private Vector2 pos;
-    private Vector2 v;
-    private Vector2 move;
-//    private float rotate;
 
     @Override
     public void show() {
         super.show();
-        img = new Texture("badlogic.jpg");
-        pos = new Vector2(200,200);
-        v = new Vector2(200,200);
-        move = new Vector2();
-//        rotate = 0;
+        bg = new Texture("textures/bg.png");
+        try {
+            background = new Background(bg);
+        } catch (GameException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        pos = new Vector2();
     }
 
     @Override
@@ -35,29 +38,29 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void dispose() {
         batch.dispose();
-        img.dispose();
+        bg.dispose();
         super.dispose();
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        v.set(screenX, Gdx.graphics.getHeight() - screenY);
-        move.set(v.x-pos.x,v.y-pos.y);
+    public void resize(Rect worldBounds) {
+        background.resize(worldBounds);
+    }
+
+    @Override
+    public boolean touchDown(Vector2 touch, int pointer, int button) {
+        pos.set(touch);
         return false;
     }
 
     private void update(float delta) {
-        if((int)pos.x!=(int)v.x&(int)pos.y!=(int)v.y)
-        pos.add(move.nor());
-//        rotate += 1;
     }
 
     private void draw() {
         Gdx.gl.glClearColor(0.5f, 0.7f, 0.8f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(img, pos.x, pos.y);
-//        batch.draw(new TextureRegion(img), pos.x, pos.y, pos.x, pos.y, 250, 250, 1, 1, rotate);
+        background.draw(batch);
         batch.end();
     }
 
