@@ -10,6 +10,7 @@ import ru.geekbrains.base.BaseScreen;
 import ru.geekbrains.exception.GameException;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprites.Background;
+import ru.geekbrains.sprites.Main_ship;
 import ru.geekbrains.sprites.Star;
 
 public class GameScreen extends BaseScreen {
@@ -19,15 +20,17 @@ public class GameScreen extends BaseScreen {
     private Texture bg;
     private Background background;
 
-    private TextureAtlas atlas;
+    private TextureAtlas atlas, atlas2;
 
     private Star[] stars;
+    private Main_ship main_ship;
 
     @Override
     public void show() {
         super.show();
         bg = new Texture("textures/bg.png");
         atlas = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
+        atlas2 = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
         initSprites();
     }
 
@@ -45,33 +48,42 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.resize(worldBounds);
         }
+        main_ship.resize(worldBounds);
+
     }
 
     @Override
     public void dispose() {
         bg.dispose();
         atlas.dispose();
+        atlas2.dispose();
         super.dispose();
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        return super.keyDown(keycode);
+        System.out.println(keycode);
+        main_ship.keyDown(keycode);
+        return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        return super.keyUp(keycode);
+        System.out.println(keycode);
+        main_ship.keyUp(keycode);
+        return false;
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        return super.touchDown(touch, pointer, button);
+        main_ship.touchDown(touch,pointer,button);
+        return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer, int button) {
-        return super.touchUp(touch, pointer, button);
+        main_ship.touchUp(touch,pointer,button);
+        return false;
     }
 
     private void initSprites() {
@@ -81,6 +93,7 @@ public class GameScreen extends BaseScreen {
             for (int i = 0; i < STAR_COUNT; i++) {
                 stars[i] =  new Star(atlas);
             }
+            main_ship = new Main_ship((atlas2));
         } catch (GameException e) {
             throw new RuntimeException(e);
         }
@@ -90,6 +103,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.update(delta);
         }
+        main_ship.update(delta);
     }
 
     private void draw() {
@@ -100,6 +114,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.draw(batch);
         }
+        main_ship.draw(batch);
         batch.end();
     }
 }
