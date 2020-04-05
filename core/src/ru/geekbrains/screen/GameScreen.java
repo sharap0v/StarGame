@@ -38,6 +38,8 @@ public class GameScreen extends BaseScreen {
         bg = new Texture("textures/bg.png");
         atlas = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
         bulletPool = new BulletPool();
+        music.play();
+        music.setLooping(true);
         initSprites();
     }
 
@@ -120,7 +122,6 @@ public class GameScreen extends BaseScreen {
     private void draw() {
         Gdx.gl.glClearColor(0.5f, 0.7f, 0.8f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        music.play();
         batch.begin();
         background.draw(batch);
         for (Star star : stars) {
