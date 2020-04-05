@@ -2,6 +2,8 @@ package ru.geekbrains.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -30,6 +32,8 @@ public class MenuScreen extends BaseScreen {
     private ButtonExit buttonExit;
     private ButtonPlay buttonPlay;
 
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
+
     public MenuScreen(Game game) {
         this.game = game;
     }
@@ -53,6 +57,7 @@ public class MenuScreen extends BaseScreen {
         batch.dispose();
         bg.dispose();
         atlas.dispose();
+        music.dispose();
         super.dispose();
     }
 
@@ -103,6 +108,7 @@ public class MenuScreen extends BaseScreen {
     private void draw() {
         Gdx.gl.glClearColor(0.5f, 0.7f, 0.8f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        music.play();
         batch.begin();
         background.draw(batch);
         for (Star star : stars) {
