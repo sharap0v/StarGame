@@ -1,6 +1,7 @@
 package ru.geekbrains.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -10,7 +11,9 @@ import ru.geekbrains.base.BaseScreen;
 import ru.geekbrains.exception.GameException;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
+import ru.geekbrains.pool.EnemyPool;
 import ru.geekbrains.sprites.Background;
+import ru.geekbrains.sprites.EnemyRespawn;
 import ru.geekbrains.sprites.MainShip;
 import ru.geekbrains.sprites.Star;
 
@@ -26,8 +29,12 @@ public class GameScreen extends BaseScreen {
     private Star[] stars;
 
     private BulletPool bulletPool;
+    private EnemyPool enemyPool;
 
     private MainShip mainShip;
+    private EnemyRespawn enemyRespawn;
+
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
 
     @Override
     public void show() {
@@ -35,6 +42,9 @@ public class GameScreen extends BaseScreen {
         bg = new Texture("textures/bg.png");
         atlas = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
         bulletPool = new BulletPool();
+        enemyPool = new EnemyPool();
+        music.play();
+        music.setLooping(true);
         initSprites();
     }
 
@@ -54,6 +64,7 @@ public class GameScreen extends BaseScreen {
             star.resize(worldBounds);
         }
         mainShip.resize(worldBounds);
+        enemyRespawn.resize(worldBounds);
     }
 
     @Override
@@ -61,6 +72,8 @@ public class GameScreen extends BaseScreen {
         bg.dispose();
         atlas.dispose();
         bulletPool.dispose();
+        enemyPool.dispose();
+        music.dispose();
         super.dispose();
     }
 
@@ -96,6 +109,7 @@ public class GameScreen extends BaseScreen {
                 stars[i] =  new Star(atlas);
             }
             mainShip = new MainShip(atlas, bulletPool);
+            enemyRespawn = new EnemyRespawn(atlas,enemyPool);
         } catch (GameException e) {
             throw new RuntimeException(e);
         }
@@ -107,6 +121,8 @@ public class GameScreen extends BaseScreen {
         }
         mainShip.update(delta);
         bulletPool.updateActiveSprites(delta);
+        enemyRespawn.update(delta);
+        enemyPool.updateActiveSprites(delta);
     }
 
     public void freeAllDestroyed() {
@@ -122,7 +138,9 @@ public class GameScreen extends BaseScreen {
             star.draw(batch);
         }
         mainShip.draw(batch);
+        enemyRespawn.draw(batch);
         bulletPool.drawActiveSprites(batch);
+        enemyPool.drawActiveSprites(batch);
         batch.end();
     }
 }
