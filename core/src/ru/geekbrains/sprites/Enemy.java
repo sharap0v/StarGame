@@ -1,20 +1,19 @@
 package ru.geekbrains.sprites;
 
-
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.base.Sprite;
 import ru.geekbrains.math.Rect;
 
-public class Bullet extends Sprite {
+public class Enemy extends Sprite {
 
     private Rect worldBounds;
     private final Vector2 v = new Vector2();
     private int damage;
     private Object owner;
 
-    public Bullet() { regions = new TextureRegion[1];
+    public Enemy() { regions = new TextureRegion[1];
     }
 
     public void set(
@@ -26,13 +25,13 @@ public class Bullet extends Sprite {
             Rect worldBounds,
             int damage
     ) {
-       this.owner = owner;
-       this.regions[0] = region;
-       this.pos.set(pos0);
-       this.v.set(v0);
-       setHeightProportion(height);
-       this.worldBounds = worldBounds;
-       this.damage = damage;
+        this.owner = owner;
+        this.regions[0] = new TextureRegion(region,0,0,332/2, 309);
+        this.pos.set(pos0);
+        this.v.set(v0);
+        setHeightProportion(height);
+        this.worldBounds = worldBounds;
+        this.damage = damage;
     }
 
     @Override
