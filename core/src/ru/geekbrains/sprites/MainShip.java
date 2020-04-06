@@ -33,6 +33,8 @@ public class MainShip extends Sprite {
     private int rightPointer = INVALID_POINTER;
 
     private Sound shotSound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
+    private float animateTimer;
+    private float animateInterval = 0.1f;
 
     public MainShip(TextureAtlas atlas, BulletPool bulletPool) throws GameException {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
@@ -60,6 +62,11 @@ public class MainShip extends Sprite {
         if (getRight() > worldBounds.getRight()) {
             setRight(worldBounds.getRight());
             stop();
+        }
+        animateTimer+=delta;
+        if (animateTimer >= animateInterval) {
+            animateTimer = 0;
+            shoot();
         }
     }
 
