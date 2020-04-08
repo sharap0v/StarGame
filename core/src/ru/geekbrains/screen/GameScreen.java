@@ -16,6 +16,7 @@ import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.EnemyPool;
 import ru.geekbrains.sprites.Background;
+import ru.geekbrains.sprites.Bullet;
 import ru.geekbrains.sprites.Enemy;
 import ru.geekbrains.sprites.MainShip;
 import ru.geekbrains.sprites.Star;
@@ -33,6 +34,7 @@ public class GameScreen extends BaseScreen {
     private Star[] stars;
 
     private BulletPool bulletPool;
+    private BulletPool enemyBulletPool;
     private EnemyPool enemyPool;
 
     private EnemyEmitter enemyEmitter;
@@ -49,7 +51,8 @@ public class GameScreen extends BaseScreen {
         bg = new Texture("textures/bg.png");
         atlas = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
         bulletPool = new BulletPool();
-        enemyPool = new EnemyPool(bulletPool, worldBounds);
+        enemyBulletPool = new BulletPool();
+        enemyPool = new EnemyPool(enemyBulletPool, worldBounds);
         laserSound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
         bulletSound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
         enemyEmitter = new EnemyEmitter(atlas, enemyPool, worldBounds, bulletSound);
@@ -145,6 +148,12 @@ public class GameScreen extends BaseScreen {
             float minDist = enemy.getHalfWidth() + mainShip.getHalfWidth();
             if (mainShip.pos.dst(enemy.pos) < minDist) {
                 enemy.destroy();
+            }
+            for (Bullet bullet : bulletPool.getActiveObjects()){
+                if(bullet.pos.dst(enemy.pos) < enemy.getHalfWidth()) {
+                    enemy.destroy();
+                    bullet.destroy();
+                }
             }
         }
     }
