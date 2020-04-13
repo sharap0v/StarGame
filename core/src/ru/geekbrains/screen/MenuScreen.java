@@ -12,6 +12,7 @@ import ru.geekbrains.exception.GameException;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprites.Background;
 import ru.geekbrains.sprites.ButtonExit;
+import ru.geekbrains.sprites.ButtonNewGame;
 import ru.geekbrains.sprites.ButtonPlay;
 import ru.geekbrains.sprites.Star;
 
@@ -25,10 +26,12 @@ public class MenuScreen extends BaseScreen {
     private Background background;
 
     private TextureAtlas atlas;
+    private TextureAtlas atlas2;
 
     private Star[] stars;
     private ButtonExit buttonExit;
     private ButtonPlay buttonPlay;
+    private ButtonNewGame buttonNewGame;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -39,6 +42,7 @@ public class MenuScreen extends BaseScreen {
         super.show();
         bg = new Texture("textures/bg.png");
         atlas = new TextureAtlas(Gdx.files.internal("textures/menuAtlas.tpack"));
+        atlas2 = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
         initSprites();
     }
 
@@ -53,6 +57,7 @@ public class MenuScreen extends BaseScreen {
         batch.dispose();
         bg.dispose();
         atlas.dispose();
+        atlas2.dispose();
         super.dispose();
     }
 
@@ -62,14 +67,17 @@ public class MenuScreen extends BaseScreen {
         for (Star star : stars) {
             star.resize(worldBounds);
         }
+        buttonNewGame.resize(worldBounds);
         buttonExit.resize(worldBounds);
         buttonPlay.resize(worldBounds);
+
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
         buttonExit.touchDown(touch, pointer, button);
         buttonPlay.touchDown(touch, pointer, button);
+        buttonNewGame.touchDown(touch, pointer, button);
         return false;
     }
 
@@ -77,6 +85,7 @@ public class MenuScreen extends BaseScreen {
     public boolean touchUp(Vector2 touch, int pointer, int button) {
         buttonExit.touchUp(touch, pointer, button);
         buttonPlay.touchUp(touch, pointer, button);
+        buttonNewGame.touchDown(touch, pointer, button);
         return false;
     }
 
@@ -89,6 +98,7 @@ public class MenuScreen extends BaseScreen {
             }
             buttonExit = new ButtonExit(atlas);
             buttonPlay = new ButtonPlay(atlas, game);
+            buttonNewGame = new ButtonNewGame(atlas2,game);
         } catch (GameException e) {
             throw new RuntimeException(e);
         }
@@ -110,6 +120,7 @@ public class MenuScreen extends BaseScreen {
         }
         buttonExit.draw(batch);
         buttonPlay.draw(batch);
+        buttonNewGame.draw(batch);
         batch.end();
     }
 
