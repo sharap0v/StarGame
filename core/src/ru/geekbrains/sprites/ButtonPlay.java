@@ -24,6 +24,6 @@ public class ButtonPlay extends ScaledButton {
         setBottom(worldBounds.getBottom() + 0.05f);
     }
     @Override
-    public void action() {game.setScreen(new GameScreen());
+    public void action() {game.setScreen(new GameScreen(game));
     }
 }
