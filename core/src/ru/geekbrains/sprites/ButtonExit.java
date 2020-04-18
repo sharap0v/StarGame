@@ -13,6 +13,7 @@ public class ButtonExit extends ScaledButton {
         super(atlas.findRegion("btExit"));
     }
 
+    
     @Override
     public void resize(Rect worldBounds) {
         setHeightProportion(0.2f);
