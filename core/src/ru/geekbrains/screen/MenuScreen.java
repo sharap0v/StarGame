@@ -12,6 +12,7 @@ import ru.geekbrains.exception.GameException;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprites.Background;
 import ru.geekbrains.sprites.ButtonExit;
+import ru.geekbrains.sprites.ButtonNewGame;
 import ru.geekbrains.sprites.ButtonPlay;
 import ru.geekbrains.sprites.Star;
 
@@ -25,6 +26,7 @@ public class MenuScreen extends BaseScreen {
     private Background background;
 
     private TextureAtlas atlas;
+    private TextureAtlas atlas2;
 
     private Star[] stars;
     private ButtonExit buttonExit;
@@ -64,6 +66,7 @@ public class MenuScreen extends BaseScreen {
         }
         buttonExit.resize(worldBounds);
         buttonPlay.resize(worldBounds);
+
     }
 
     @Override
